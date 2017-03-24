@@ -2,7 +2,7 @@
 
 An IR Controller for Daikin Remote ARC452A4.
 
-Add the ```daikin-ARC452A4.conf``` file to the /etc/lirc/lircd.conf file like so:
+Add the ```daikin-ARC452A4.conf``` file to the /etc/lirc/lircd.conf then restart lirc.
 
 ```
 include "/change/me/daikin-ir-controller/daikin-ARC452A4.conf"
