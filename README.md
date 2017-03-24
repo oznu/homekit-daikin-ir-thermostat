@@ -7,3 +7,11 @@ Add the ```daikin-ARC452A4.conf``` file to the /etc/lirc/lircd.conf file like so
 ```
 include "/change/me/daikin-ARC452A4/lircd.conf"
 ```
+
+### Usage
+
+Run the server:
+
+```
+node bin/www
+```
