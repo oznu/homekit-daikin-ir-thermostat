@@ -48,7 +48,7 @@ class Daikin {
         console.error(err)
         console.error(`Failed to send command. Is Lirc configured?`)
       }
-      callback(daikin.status)
+      callback(null, daikin.status)
     })
   }
 
