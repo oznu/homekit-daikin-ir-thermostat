@@ -32,6 +32,7 @@ class Daikin {
   }
 
   sendUpdate (callback) {
+    let daikin = this
     let irCommand
 
     if (this.status.heatingCoolingState === 'off') {
@@ -47,7 +48,7 @@ class Daikin {
         console.error(err)
         console.error(`Failed to send command. Is Lirc configured?`)
       }
-      callback(this.status)
+      callback(daikin.status)
     })
   }
 
