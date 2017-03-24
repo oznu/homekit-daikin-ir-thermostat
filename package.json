@@ -1,0 +1,17 @@
+{
+  "name": "daikin-ir-controller",
+  "version": "1.0.0",
+  "description": "An IR Controller for Daikin Remote ARC452A4",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "oznu <dev@oz.nu>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.15.2",
+    "gulp-nodemon": "^2.2.1",
+    "morgan": "^1.8.1",
+    "node-lirc": "^0.0.4"
+  }
+}
