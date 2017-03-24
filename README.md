@@ -6,7 +6,7 @@ An IR Controller for Daikin Remote ARC452A4.
 
 This will *probably* only work on systems that support the Daikin Remote ARC452A4 remote control.
 
-Your system must have lirc installed and an infrared emitter configured. [This Guide](http://alexba.in/blog/2013/01/06/setting-up-lirc-on-the-raspberrypi/) shows the how to use a RaspberryPi and Lirc. 
+Your system must have lirc installed and an infrared emitter configured. [This Guide](http://alexba.in/blog/2013/01/06/setting-up-lirc-on-the-raspberrypi/) shows the how to use a RaspberryPi and Lirc.
 
 # Setup
 

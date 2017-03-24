@@ -23,14 +23,12 @@ class Daikin {
   setTargetTemperature (value, callback) {
     this.status.targetTemperature = parseFloat(value)
     this.sendUpdate(callback)
-    callback(null, this.status)
   }
 
   setTargetState (value = 'off', callback) {
     this.status.heatingCoolingState = value
     this.status.targetHeatingCoolingState = value
     this.sendUpdate(callback)
-    callback(null, this.status)
   }
 
   sendUpdate (callback) {
