@@ -13,7 +13,7 @@ Your system must have lirc installed and an infrared emitter configured. [This G
 Add the ```daikin-ARC452A4.conf``` file to the /etc/lirc/lircd.conf:
 
 ```
-include "/change/me/daikin-ir-controller/daikin-ARC452A4.conf"
+include "/path/to/daikin-ir-controller/ac-ir-controller.conf"
 ```
 
 Restart Lirc:
@@ -45,5 +45,3 @@ There are a few guides on the internet that explain how to decode the signals fo
 The supported combinations are *Auto*, *Cool*, *Heat* as well as *Off* and a target temperature. This means for a temperature range between 18c and 30c we need to record 37 different IR signals, 12 for each of the on states and one for the off state.
 
 The rest of the settings like fan speed and swing/oscillate should be set as desired before recording the signals. Any timers should also be disabled.
-
- 

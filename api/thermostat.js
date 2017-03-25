@@ -1,8 +1,8 @@
 'use strict'
 
-// const nodeLIRC = require('node-lirc')
+const nodeLIRC = require('node-lirc')
 
-// nodeLIRC.init()
+nodeLIRC.init()
 
 const config = require('./config')
 
@@ -22,7 +22,7 @@ class Daikin {
     this.upperTempLimit = Math.max(this.minAutoTemp, this.minHeatTemp, this.minCoolTemp)
 
     this.status = {}
-    this.status.currentTemperature = 25
+    this.status.currentTemperature = 25 // TODO Add Temperature Sensors
     this.status.targetTemperature = config.get('defaultTemp')
     this.status.mode = config.get('defaultState')
   }
@@ -98,16 +98,14 @@ class Daikin {
     }
 
     console.log(`Sending ir request using ${this.remote}: ${irCommand}`)
-    console.log(this.remote)
-    callback(null, daikin.status)
 
-    // nodeLIRC.irsend.sendOnce(config.get('remote'), irCommand, (err, data) => {
-    //   if (err) {
-    //     console.error(err)
-    //     console.error(`Failed to send command. Is Lirc configured?`)
-    //   }
-    //   callback(null, daikin.status)
-    // })
+    nodeLIRC.irsend.sendOnce(config.get('remote'), irCommand, (err, data) => {
+      if (err) {
+        console.error(err)
+        console.error(`Failed to send command. Is Lirc configured?`)
+      }
+      callback(null, daikin.status)
+    })
   }
 
 }
