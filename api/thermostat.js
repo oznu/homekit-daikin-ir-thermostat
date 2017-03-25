@@ -19,7 +19,7 @@ class Daikin {
     this.maxAutoTemp = parseInt(config.get('maxAutoTemp'))
 
     this.lowerTempLimit = Math.min(this.minAutoTemp, this.minHeatTemp, this.minCoolTemp)
-    this.upperTempLimit = Math.max(this.minAutoTemp, this.minHeatTemp, this.minCoolTemp)
+    this.upperTempLimit = Math.max(this.maxAutoTemp, this.maxHeatTemp, this.maxCoolTemp)
 
     this.status = {}
     this.status.currentTemperature = 25 // TODO Add Temperature Sensors
