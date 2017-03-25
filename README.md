@@ -66,7 +66,7 @@ While set to **OFF** configure the AC controller to *Cool* mode on the lowest te
 mode2 -d /dev/lirc0 -m > remotes/<brand-model>/18c-cool
 ```
 
-Wait about a second then cancel the process. Check the contents of **remotes/<brand-model>/18c-cool**, it should contain the IR codes for that mode/temperature combination.
+Wait about a second then cancel the process. Check the contents of ```remotes/<brand-model>/18c-cool```, it should contain the IR codes for that mode/temperature combination.
 
 Repeat this process for all the temperatures up to the maximum available on *Cool* mode. Then repeat the process for *Heat* and *Auto* modes.
 
