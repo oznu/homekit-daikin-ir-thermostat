@@ -2,7 +2,7 @@
 
 An IR Controller for Daikin Remote ARC452A4 and possibly other smart AC remotes.
 
-This project has been created to intergrate my Daikin AC unit with [Apple Homekit](http://www.apple.com/au/ios/home/) via [Homebridge](https://github.com/nfarina/homebridge). This allows me to control my AC using my iPhone and Siri.
+This project has been created to intergrate my Daikin AC unit with [Apple Homekit](http://www.apple.com/au/ios/home/) via [Homebridge](https://github.com/oznu/homebridge-daikin-ir-controller). This allows me to control the temperature of my home using my iPhone and Siri.
 
 # Compatibility
 
