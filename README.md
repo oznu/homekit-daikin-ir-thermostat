@@ -1,10 +1,12 @@
 # Daikin IR Controller - ARC452A4
 
-An IR Controller for Daikin Remote ARC452A4.
+An IR Controller for Daikin Remote ARC452A4 and possibly other smart AC remotes.
+
+This project has been created to intergrate my Daikin AC unit with [Apple Homekit](http://www.apple.com/au/ios/home/) via [Homebridge](https://github.com/nfarina/homebridge). This allows me to control my AC using my iPhone and Siri.
 
 # Compatibility
 
-This will *probably* only work on systems that support the Daikin Remote ARC452A4 remote control.
+This will *probably* only work on systems that support the Daikin Remote ARC452A4 remote control, but it may be possible to learn other remotes, see below.
 
 Your system must have lirc installed and an infrared emitter configured. [This Guide](http://alexba.in/blog/2013/01/06/setting-up-lirc-on-the-raspberrypi/) shows the how to use a RaspberryPi and Lirc.
 
