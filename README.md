@@ -10,6 +10,22 @@ This will *probably* only work on systems that support the Daikin Remote ARC452A
 
 Your system must have lirc installed and an infrared emitter configured. [This Guide](http://alexba.in/blog/2013/01/06/setting-up-lirc-on-the-raspberrypi/) shows the how to use a RaspberryPi and Lirc.
 
+This module depends on the [BCM2835](http://www.airspayce.com/mikem/bcm2835/) library that must be installed on your board before you can actually install this module.
+
+To install BCM2835:
+
+```
+wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.46.tar.gz
+tar zxvf bcm2835-1.46.tar.gz
+cd bcm2835-1.46
+./configure
+make
+sudo make check
+sudo make install
+```
+
+**Because BCM2835 requires access to /dev/mem you will need to run this service as root**.
+
 # Setup
 
 Add the ```daikin-ARC452A4.conf``` file to the /etc/lirc/lircd.conf:
@@ -75,7 +91,7 @@ All methods return the current status as JSON:
 
 ```json
 {
-  "currentTemperature":25, 
+  "currentTemperature":25,
   "targetTemperature":24,
   "mode":"off"
 }

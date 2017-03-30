@@ -1,5 +1,6 @@
 'use strict'
 
+const dht = require('node-dht-sensor')
 const nodeLIRC = require('node-lirc')
 
 nodeLIRC.init()
@@ -10,6 +11,11 @@ class Daikin {
 
   constructor () {
     this.remote = config.get('remote')
+
+    this.dht = {
+      sensorType: config.get('sensorType'),
+      sensorGpio: config.get('sensorGpio')
+    }
 
     this.minCoolTemp = parseInt(config.get('minCoolTemp'))
     this.maxCoolTemp = parseInt(config.get('maxCoolTemp'))
@@ -22,13 +28,27 @@ class Daikin {
     this.upperTempLimit = Math.max(this.maxAutoTemp, this.maxHeatTemp, this.maxCoolTemp)
 
     this.status = {}
-    this.status.currentTemperature = 25 // TODO Add Temperature Sensors
+    this.status.currentTemperature = 0
+    this.status.currentHumidity = 0
     this.status.targetTemperature = config.get('defaultTemp')
     this.status.mode = config.get('defaultState')
+
+    setInterval(this.getCurrentTemperature.bind(this), 10000)
   }
 
   getStatus (callback) {
     callback(null, this.status)
+  }
+
+  getCurrentTemperature () {
+    dht.read(this.sensorType, this.sensorGpio, function (err, temperature, humidity) {
+      if (err) {
+        console.error(err)
+      } else {
+        this.status.currentTemperature = temperature
+        this.status.currentHumidity = humidity
+      }
+    })
   }
 
   setTargetTemperature (value, callback) {

@@ -13,6 +13,7 @@
     "gulp-nodemon": "^2.2.1",
     "morgan": "^1.8.1",
     "nconf": "^0.8.4",
-    "node-lirc": "^0.0.4"
+    "node-lirc": "^0.0.4",
+    "node-dht-sensor": "^0.0.32"
   }
 }
