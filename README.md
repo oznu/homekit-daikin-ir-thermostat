@@ -76,6 +76,7 @@ All methods return the current status as JSON:
 ```json
 {
   "currentTemperature":25,
+  "currentHumidity":29,
   "targetTemperature":24,
   "mode":"off"
 }
