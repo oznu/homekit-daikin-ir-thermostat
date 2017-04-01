@@ -1,11 +1,8 @@
 'use strict'
 
-const dht = require('node-dht-sensor')
-const nodeLIRC = require('node-lirc')
-
-nodeLIRC.init()
-
 const config = require('./config')
+const nodeLIRC = require('node-lirc')
+const dht = config.get('dht') ? require('node-dht-sensor') : null
 
 class Daikin {
 
@@ -33,7 +30,11 @@ class Daikin {
     this.status.targetTemperature = config.get('defaultTemp')
     this.status.mode = config.get('defaultState')
 
-    setInterval(this.getCurrentTemperature.bind(this), 10000)
+    nodeLIRC.init()
+
+    if (config.get('dht')) {
+      setInterval(this.getCurrentTemperature.bind(this), 10000)
+    }
   }
 
   getStatus (callback) {
@@ -41,7 +42,7 @@ class Daikin {
   }
 
   getCurrentTemperature () {
-    dht.read(this.sensorType, this.sensorGpio, function (err, temperature, humidity) {
+    dht.read(this.dht.sensorType, this.dht.sensorGpio, (err, temperature, humidity) => {
       if (err) {
         console.error(err)
       } else {

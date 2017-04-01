@@ -8,6 +8,7 @@ nconf.defaults({
   remote: 'daikin-ARC452A4',
   defaultTemp: 25,
   defaultState: 'off',
+  dht: false,
   sensorType: 11,
   sensorGpio: 4,
   minCoolTemp: 18,
