@@ -188,3 +188,11 @@ Use the ```--remote``` flag with the name of your remote.
 ```
 ./bin/www --remote daikin-ARC452A4
 ```
+
+# Running in Docker
+
+You still need to configure Lirc on the host OS and pass through the device.
+
+```
+ docker run --cap-add SYS_RAWIO --device /dev/mem:/dev/mem --device /dev/lirc0:/dev/lirc0 oznu/rpi-daikin-ir-controlle
+```

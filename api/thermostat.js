@@ -46,6 +46,7 @@ class Daikin {
       if (err) {
         console.error(err)
       } else {
+        console.log(`Read Temp: ${temperature}`)
         this.status.currentTemperature = temperature
         this.status.currentHumidity = humidity
       }

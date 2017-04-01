@@ -1,4 +1,4 @@
-# Usage: docker run --rm -it --cap-add SYS_RAWIO --device /dev/mem:/dev/mem --device /dev/gpiomem:/dev/gpiomem --device /dev/lirc0:/dev/lirc0 node bash
+# Usage: docker run --cap-add SYS_RAWIO --device /dev/mem:/dev/mem --device /dev/lirc0:/dev/lirc0 oznu/rpi-daikin-ir-controller
 
 FROM resin/rpi-raspbian:latest
 
@@ -27,3 +27,20 @@ RUN curl -SLO "http://www.airspayce.com/mikem/bcm2835/bcm2835-1.46.tar.gz" \
     && make \
     && make install \
     && rm -rf /tmp/*
+
+# Add Module
+RUN mkdir /app
+WORKDIR /app
+
+ADD package.json /app/
+RUN npm install --production
+RUN npm install node-dht-sensor
+
+RUN echo "include \"/app/ac-ir-controller.conf\"" > /etc/lirc/lircd.conf
+RUN mkdir -p /var/run/lirc
+
+ADD . /app/
+
+EXPOSE 3003
+
+CMD ["bin/www", "--dht"]
