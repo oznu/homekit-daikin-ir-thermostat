@@ -1,4 +1,4 @@
-# Usage: docker run --cap-add SYS_RAWIO --device /dev/mem:/dev/mem --device /dev/lirc0:/dev/lirc0 oznu/rpi-daikin-ir-controller
+# Usage: docker run -p 3003:3003 --cap-add SYS_RAWIO --device /dev/mem:/dev/mem --device /dev/lirc0:/dev/lirc0 oznu/rpi-daikin-ir-controller
 
 FROM resin/rpi-raspbian:latest
 
@@ -37,10 +37,15 @@ RUN npm install --production
 RUN npm install node-dht-sensor
 
 RUN echo "include \"/app/ac-ir-controller.conf\"" > /etc/lirc/lircd.conf
+ADD init.d/hardware.conf /etc/lirc/hardware.conf
 RUN mkdir -p /var/run/lirc
 
 ADD . /app/
 
 EXPOSE 3003
+
+RUN mkdir /init.d
+COPY init.d/ /init.d
+ENTRYPOINT ["/init.d/entrypoint.sh"]
 
 CMD ["bin/www", "--dht"]
