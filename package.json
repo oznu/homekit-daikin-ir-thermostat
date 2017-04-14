@@ -10,9 +10,12 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.15.2",
-    "gulp-nodemon": "^2.2.1",
+    "hap-nodejs": "^0.4.22",
     "morgan": "^1.8.1",
-    "nconf": "^0.8.4",
-    "node-lirc": "^0.0.4"
+    "nconf": "^0.8.4"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-nodemon": "^2.2.1"
   }
 }

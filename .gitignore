@@ -2,3 +2,4 @@
 .env
 test.js
 .nodenv-vars
+/persist
