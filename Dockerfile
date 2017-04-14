@@ -25,7 +25,8 @@ RUN npm install --production
 RUN npm install node-dht-sensor
 
 RUN echo "include \"/app/ac-ir-controller.conf\"" > /etc/lirc/lircd.conf
-ADD init.d/hardware.conf /etc/lirc/hardware.conf
+COPY init.d/hardware.conf /etc/lirc/hardware.conf
+COPY inid.d/avahi-daemon.conf /etc/avahi/avahi-daemon.conf
 RUN mkdir -p /var/run/lirc && mkdir -p /var/run/dbus
 
 ADD . /app/
