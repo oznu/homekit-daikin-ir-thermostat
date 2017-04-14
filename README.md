@@ -198,5 +198,21 @@ Use the ```--remote``` flag with the name of your remote.
 You still need to configure Lirc on the host OS and pass through the device.
 
 ```
- docker run -p 3003:3003 --cap-add SYS_RAWIO --device /dev/mem:/dev/mem --device /dev/lirc0:/dev/lirc0 oznu/rpi-daikin-ir-controller
+docker run -d
+  --net=host
+  --cap-add SYS_RAWIO
+  --device /dev/mem:/dev/mem
+  --device /dev/lirc0:/dev/lirc0
+  -v </path/to/config>:/app/persist
+  oznu/rpi-daikin-ir-controller
 ```
+
+## Parameters
+
+The parameters are split into two halves, separated by a colon, the left hand side representing the host and the right the container side.
+
+* ```--net=host``` - Shares host networking with container, required.
+* ```-v /app/persist``` - The config and persistent data location.
+* ```--cap-add SYS_RAWIO``` - Allows the container to talk to the GPIO pins, required.
+* ```--device /dev/mem:/dev/mem``` - Share the /dev/mem device to the container, required if using temperature/humidity sensors.
+* ```--device /dev/lirc0:/dev/lirc0``` - Share the lirc device to the container, required.
