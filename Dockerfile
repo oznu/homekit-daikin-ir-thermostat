@@ -3,7 +3,7 @@
 FROM resin/raspberry-pi-node:6.10
 
 RUN apt-get update -y
-RUN apt-get install -y lirc
+RUN apt-get install -y lirc libnss-mdns avahi-discover libavahi-compat-libdnssd-dev
 
 WORKDIR /tmp
 
