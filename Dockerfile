@@ -26,7 +26,7 @@ RUN npm install node-dht-sensor
 
 RUN echo "include \"/app/ac-ir-controller.conf\"" > /etc/lirc/lircd.conf
 ADD init.d/hardware.conf /etc/lirc/hardware.conf
-RUN mkdir -p /var/run/lirc
+RUN mkdir -p /var/run/lirc && mkdir -p /var/run/dbus
 
 ADD . /app/
 
