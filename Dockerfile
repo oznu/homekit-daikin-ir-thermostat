@@ -1,4 +1,4 @@
-# Usage: docker run -p 3003:3003 --cap-add SYS_RAWIO --device /dev/mem:/dev/mem --device /dev/lirc0:/dev/lirc0 oznu/rpi-daikin-ir-controller
+# Usage: docker run -d --net=host --cap-add SYS_RAWIO --device /dev/mem:/dev/mem --device /dev/lirc0:/dev/lirc0 -v /local/path:/app/persist oznu/rpi-daikin-ir-controller
 
 FROM resin/raspberry-pi-node:6.10
 

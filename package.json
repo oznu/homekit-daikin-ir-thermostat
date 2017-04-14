@@ -9,6 +9,7 @@
   "author": "oznu <dev@oz.nu>",
   "license": "MIT",
   "dependencies": {
+    "chalk": "^1.1.3",
     "express": "^4.15.2",
     "hap-nodejs": "^0.4.22",
     "morgan": "^1.8.1",
