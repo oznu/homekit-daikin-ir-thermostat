@@ -1,6 +1,4 @@
-# Daikin IR Controller - ARC452A4
-
-An IR Controller for Daikin Remote ARC452A4 and possibly other smart AC remotes.
+# HomeKit Thermostat - Daikin IR Controller - ARC452A4
 
 This project has been created to intergrate my Daikin AC unit with [Apple Homekit](http://www.apple.com/au/ios/home/). This allows me to control the temperature of my home using my iPhone and Siri.
 
