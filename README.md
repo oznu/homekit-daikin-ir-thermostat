@@ -2,7 +2,7 @@
 
 An IR Controller for Daikin Remote ARC452A4 and possibly other smart AC remotes.
 
-This project has been created to intergrate my Daikin AC unit with [Apple Homekit](http://www.apple.com/au/ios/home/) via [Homebridge](https://github.com/oznu/homebridge-daikin-ir-controller). This allows me to control the temperature of my home using my iPhone and Siri.
+This project has been created to intergrate my Daikin AC unit with [Apple Homekit](http://www.apple.com/au/ios/home/). This allows me to control the temperature of my home using my iPhone and Siri.
 
 # Compatibility
 
@@ -37,6 +37,10 @@ Run the server:
 ```
 node bin/www
 ```
+
+You can now add the thermostat accessory in HomeKit. See https://support.apple.com/en-la/HT204893
+
+The accessory pincode will be displayed in the console.
 
 ## API Methods
 
@@ -194,5 +198,21 @@ Use the ```--remote``` flag with the name of your remote.
 You still need to configure Lirc on the host OS and pass through the device.
 
 ```
- docker run -p 3003:3003 --cap-add SYS_RAWIO --device /dev/mem:/dev/mem --device /dev/lirc0:/dev/lirc0 oznu/rpi-daikin-ir-controller
+docker run -d
+  --net=host
+  --cap-add SYS_RAWIO
+  --device /dev/mem:/dev/mem
+  --device /dev/lirc0:/dev/lirc0
+  -v </path/to/config>:/app/persist
+  oznu/rpi-daikin-ir-controller
 ```
+
+## Parameters
+
+The parameters are split into two halves, separated by a colon, the left hand side representing the host and the right the container side.
+
+* ```--net=host``` - Shares host networking with container, required.
+* ```-v /app/persist``` - The config and persistent data location.
+* ```--cap-add SYS_RAWIO``` - Allows the container to talk to the GPIO pins, required.
+* ```--device /dev/mem:/dev/mem``` - Share the /dev/mem device to the container, required if using temperature/humidity sensors.
+* ```--device /dev/lirc0:/dev/lirc0``` - Share the lirc device to the container, required.

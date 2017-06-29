@@ -1,23 +1,11 @@
-# Usage: docker run -p 3003:3003 --cap-add SYS_RAWIO --device /dev/mem:/dev/mem --device /dev/lirc0:/dev/lirc0 oznu/rpi-daikin-ir-controller
+# Usage: docker run -d --net=host --cap-add SYS_RAWIO --device /dev/mem:/dev/mem --device /dev/lirc0:/dev/lirc0 -v /local/path:/app/persist oznu/rpi-daikin-ir-controller
 
-FROM resin/rpi-raspbian:latest
+FROM resin/raspberry-pi-node:6.10
 
 RUN apt-get update -y
-RUN apt-get install -y apt-utils
-RUN apt-get install -y curl build-essential python nano lirc
+RUN apt-get install -y lirc libnss-mdns avahi-discover libavahi-compat-libdnssd-dev
 
 WORKDIR /tmp
-
-# Install Node LTS
-ENV NODE_VERSION 6.10.1
-ENV NODE_CHECKSUM e59a5558a6271385fddc5f58f85dfe7bf9b7c73d75ea14d0171266cf90bff830
-
-RUN curl -SLO "http://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-armv6l.tar.gz" \
-    && echo "$NODE_CHECKSUM  node-v$NODE_VERSION-linux-armv6l.tar.gz" | sha256sum -c - \
-    && tar -xzf "node-v$NODE_VERSION-linux-armv6l.tar.gz" -C /usr/local --strip-components=1 \
-    && rm "node-v$NODE_VERSION-linux-armv6l.tar.gz" \
-    && npm config set unsafe-perm true -g --unsafe-perm \
-    && rm -rf /tmp/*
 
 # Install BCM2835 for DHT11 Sensor Support
 RUN curl -SLO "http://www.airspayce.com/mikem/bcm2835/bcm2835-1.46.tar.gz" \
@@ -37,8 +25,9 @@ RUN npm install --production
 RUN npm install node-dht-sensor
 
 RUN echo "include \"/app/ac-ir-controller.conf\"" > /etc/lirc/lircd.conf
-ADD init.d/hardware.conf /etc/lirc/hardware.conf
-RUN mkdir -p /var/run/lirc
+COPY init.d/hardware.conf /etc/lirc/hardware.conf
+COPY init.d/avahi-daemon.conf /etc/avahi/avahi-daemon.conf
+RUN mkdir -p /var/run/lirc && mkdir -p /var/run/dbus
 
 ADD . /app/
 

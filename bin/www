@@ -2,7 +2,8 @@
 
 'use strict'
 
-const app = require('../api/express')
+const hap = require('../lib/hap')
+const app = require('../lib/api/express')
 const http = require('http')
 const server = http.createServer(app)
 
@@ -41,6 +42,9 @@ function onListening () {
   var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port
   console.log('Listening on ' + bind + ' with PID ' + process.pid)
 }
+
+// Start HAP
+hap.start()
 
 server.listen(port)
 server.on('error', onError)
