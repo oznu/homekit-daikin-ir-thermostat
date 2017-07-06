@@ -5,7 +5,7 @@ mkdir -p /var/run/dbus
 
 # delete existing pid if found
 [[ -e /var/run/dbus/pid ]] && rm -f /var/run/dbus/pid
-[[ -e /var/run/avahi-daemon/pid ]] && rm -f var/run/avahi-daemon/pid
+[[ -e /var/run/avahi-daemon/pid ]] && rm -f /var/run/avahi-daemon/pid
 
 # permissions
 chown messagebus:messagebus /var/run/dbus
