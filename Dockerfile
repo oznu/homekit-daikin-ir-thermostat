@@ -24,7 +24,7 @@ RUN npm install --production \
 ADD . /app/
 
 # s6 overlay
-ADD https://github.com/just-containers/s6-overlay/releases/download/v1.19.1.1/s6-overlay-amd64.tar.gz /tmp/s6-overlay.tar.gz
+ADD https://github.com/just-containers/s6-overlay/releases/download/v1.19.1.1/s6-overlay-armhf.tar.gz /tmp/s6-overlay.tar.gz
 RUN tar xvfz /tmp/s6-overlay.tar.gz -C /
 
 COPY dockerfs /
