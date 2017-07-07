@@ -1,11 +1,11 @@
 # Usage: docker run -d --net=host --cap-add SYS_RAWIO --device /dev/mem:/dev/mem --device /dev/lirc0:/dev/lirc0 -v /local/path:/app/persist oznu/rpi-daikin-ir-controller
-FROM resin/raspberry-pi-node:6.10
+FROM resin/raspberry-pi-node:6.10-slim
 
 RUN mkdir /app
 ADD package.json /app/
 
 RUN apt-get update -y \
-  && apt-get install -y lirc libnss-mdns avahi-discover libavahi-compat-libdnssd-dev \
+  && apt-get install -y lirc libnss-mdns avahi-discover libavahi-compat-libdnssd-dev python make gcc g++ build-essential \
   # Install BCM2835 for DHT11 Sensor Support
   && curl -SLO "http://www.airspayce.com/mikem/bcm2835/bcm2835-1.46.tar.gz" \
   && tar -zxvf bcm2835-1.46.tar.gz \
