@@ -2,18 +2,19 @@
 
 This project has been created to intergrate my Daikin AC unit with [Apple Homekit](http://www.apple.com/au/ios/home/). This allows me to control the temperature of my home using my iPhone and Siri.
 
-# Compatibility
+## Compatibility
 
-This will *probably* only work on systems that support the Daikin Remote ARC452A4 remote control, but it may be possible to learn other remotes, see below.
+This will *probably* only work on systems that support the Daikin Remote ARC452A4 remote control, but it may be possible to [learn other remotes](docs/REMOTES.md).
 
 Your system must have lirc installed and an infrared emitter configured. [This Guide](http://alexba.in/blog/2013/01/06/setting-up-lirc-on-the-raspberrypi/) shows the how to use a RaspberryPi and Lirc.
 
-# Setup
+## Setup
+
 
 Add the ```daikin-ARC452A4.conf``` file to the /etc/lirc/lircd.conf:
 
 ```
-include "/path/to/daikin-ir-controller/ac-ir-controller.conf"
+include "/path/to/daikin-ir-controller/app/ac-ir-controller.conf"
 ```
 
 Restart Lirc:
@@ -28,7 +29,11 @@ Test this is working:
 irsend SEND_ONCE daikin-ARC452A4 off
 ```
 
-# Usage
+* [REST API](docs/API.md)
+* [Setting up Temperature and Humidity Sensor](docs/DHT.md)
+* [Learning Custom Remotes](docs/REMOTES.md)
+
+## Usage
 
 Run the server:
 
@@ -38,174 +43,30 @@ node bin/www
 
 You can now add the thermostat accessory in HomeKit. See https://support.apple.com/en-la/HT204893
 
-The accessory pincode will be displayed in the console.
+The accessory pin code will be displayed in the console.
 
-## API Methods
 
-There are three API methods:
+## Running in Docker
 
-* Get Status
-* Set Mode
-* Set Temperature
+This app can run as a Docker Container on Raspbian.
 
-### Get Status
-
-```http
-GET /status
-```
-
-### Set Mode/State
-
-```http
-GET /set-state/off
-GET /set-state/heat
-GET /set-state/cool
-GET /set-state/auto
-```
-
-### Set Temperature
-
-```http
-GET /set-temperature/22
-```
-
-*Note If the requested temperature is outside the allowed range it will automatically be set the the lowest or highest temperature allowed for the current mode. For example, if you try and cool to 12° but the AC unit can only cool to 18°, the temperature will be set to 18°. Similarly if you try and cool to 50° but the AC unit can only cool to 30° the temperature will set to 30°. The HTTP response will show the **targetTemperature** that was set.*
-
-### Response
-
-All methods return the current status as JSON:
-
-```json
-{
-  "currentTemperature":25,
-  "currentHumidity":29,
-  "targetTemperature":24,
-  "mode":"off"
-}
-```
-
-# Temperature and Humidity Sensor
-
-This module supports the DHT11, DHT22 and AM2302 temperature and humidity sensors.
-
-To enable temperature and humidity the [BCM2835](http://www.airspayce.com/mikem/bcm2835/) library that must be installed on your board.
-
-To install BCM2835:
+If using this method you should **not** install Lirc on the host, instead you need to setup lirc-rpi in your ```/boot/config.txt``` file like this:
 
 ```
-wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.46.tar.gz
-tar zxvf bcm2835-1.46.tar.gz
-cd bcm2835-1.46
-./configure
-make
-sudo make check
-sudo make install
+dtoverlay=lirc-rpi,gpio_in_pin=23,gpio_out_pin=22
 ```
 
-Once installed add the [node-dht-sensor](https://github.com/momenso/node-dht-sensor) module using npm:
-
 ```
-npm install node-dht-sensor
-```
-
-Then run the server with the ```--dht``` flag:
-
-> **BCM2835** requires access to **/dev/mem** so you will need to run this service as **root** using **sudo**.
-
-```
-sudo node bin/www --dht --sensorType 11 --sensorGpio 4
-```
-
-You should use sensorType value to match the sensor as follows:
-
-| Sensor          | sensorType value |
-|-----------------|:----------------:|
-| DHT11           | 11               |
-| DHT22 or AM2302 | 22               |
-
-# Recording Remote Control Signals
-
-Many AC units come with *smart* remotes that send the entire configuration each time a button is pressed on the remote. Not like the TV remote which sends static signals (say Volume UP for example). To add to the complexity AC units do not have a standard IR protocol and the signals sent differ between manufacturers and even between models by the same manufacturer.
-
-There are a few guides on the internet that explain how to decode the signals for certain remotes and figure out what part of the payload does what. This project does not attempt to do that, instead it takes the easy approach and just records the signal for the commonly used configuration combinations.
-
-The supported combinations are *Auto*, *Cool*, *Heat* as well as *Off* and a target temperature. This means for a temperature range between 18c and 30c we need to record 37 different IR signals, 12 for each of the on states and one for the off state.
-
-The rest of the settings like fan speed and swing/oscillate should be set as desired before recording the signals. Any timers should also be disabled.
-
-## Creating A New Remote
-
-Create a new directory in the remotes folder using the name of your remote.
-
-```
-mkdir remotes/<brand-model>
-```
-
-Stop Lirc:
-
-```
-sudo /etc/init.d/lirc stop
-```
-
-While set to **OFF** configure the AC controller to *Cool* mode on the lowest temperature start recording then press the **ON** button:
-
-```
-mode2 -d /dev/lirc0 -m > remotes/<brand-model>/18c-cool
-```
-
-Wait about a second then cancel the process. Check the contents of ```remotes/<brand-model>/18c-cool```, it should contain the IR codes for that mode/temperature combination.
-
-Repeat this process for all the temperatures up to the maximum available on *Cool* mode. Then repeat the process for *Heat* and *Auto* modes.
-
-Record the *Off* command by recording the signal sent when you turn the remote off:
-
-```
-mode2 -d /dev/lirc0 -m > remotes/<brand-model>/off
-```
-
-Once complete, start up the lirc process again:
-
-```
-sudo /etc/init.d/lirc start
-```
-
-## Building The Remote Config File
-
-Once you have recorded all the signals for your new remote, update the **ac-ir-controller.conf** file by running:
-
-```
-./generate-lircd.conf.js
-```
-
- Restart lirc every time you make a change to the *ac-ir-controller.conf* file.
-
- ```
- sudo /etc/init.d/lirc restart
- ```
-
-## Starting the server with a custom remote
-
-Use the ```--remote``` flag with the name of your remote.
-
-```
-./bin/www --remote daikin-ARC452A4
-```
-
-# Running in Docker
-
-You still need to configure Lirc on the host OS and pass through the device.
-
-```
-docker run -d
-  --net=host
-  --cap-add SYS_RAWIO
-  --device /dev/mem:/dev/mem
-  --device /dev/lirc0:/dev/lirc0
-  -v </path/to/config>:/app/persist
+docker run \
+  --net=host \
+  --cap-add SYS_RAWIO \
+  --device /dev/mem:/dev/mem \
+  --device /dev/lirc0:/dev/lirc0 \
+  -v </path/to/config>:/app/persist \
   oznu/rpi-daikin-ir-controller
 ```
 
-## Parameters
+### Parameters
 
 The parameters are split into two halves, separated by a colon, the left hand side representing the host and the right the container side.
 

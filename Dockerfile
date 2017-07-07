@@ -2,7 +2,7 @@
 FROM resin/raspberry-pi-node:6.10-slim
 
 RUN mkdir /app
-ADD package.json /app/
+COPY app/package.json /app/
 
 RUN apt-get update -y \
   && apt-get install -y lirc libnss-mdns avahi-discover libavahi-compat-libdnssd-dev python build-essential curl \
@@ -25,7 +25,7 @@ RUN apt-get update -y \
   && apt-get autoremove \
   && apt-get clean
 
-ADD . /app/
+COPY app /app
 WORKDIR /app
 
 COPY dockerfs /
