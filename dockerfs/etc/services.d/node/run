@@ -1,0 +1,5 @@
+#!/usr/bin/with-contenv bash
+
+sleep 5
+echo "Starting app"
+exec node /app/bin/www --dht
