@@ -5,7 +5,7 @@ RUN mkdir /app
 ADD package.json /app/
 
 RUN apt-get update -y \
-  && apt-get install -y lirc libnss-mdns avahi-discover libavahi-compat-libdnssd-dev python make gcc g++ build-essential \
+  && apt-get install -y lirc libnss-mdns avahi-discover libavahi-compat-libdnssd-dev python make gcc g++ build-essential curl \
   # Install BCM2835 for DHT11 Sensor Support
   && curl -SLO "http://www.airspayce.com/mikem/bcm2835/bcm2835-1.46.tar.gz" \
   && tar -zxvf bcm2835-1.46.tar.gz \
@@ -17,12 +17,12 @@ RUN apt-get update -y \
   && cd /app \
   && npm install --production \
   && npm install node-dht-sensor \
-  # Cleanup
-  && apt-get remove python make gcc g++ build-essential \
-  && apt-get autoremove \
-  && apt-get clean \
   # Install S6 Overlay
-  && curl -L -s https://github.com/just-containers/s6-overlay/releases/download/v1.19.1.1/s6-overlay-armhf.tar.gz | tar xvzf - -C /
+  && curl -L -s https://github.com/just-containers/s6-overlay/releases/download/v1.19.1.1/s6-overlay-armhf.tar.gz | tar xvzf - -C / \
+  # Cleanup
+  && apt-get remove python make gcc g++ build-essential curl \
+  && apt-get autoremove \
+  && apt-get clean
 
 ADD . /app/
 WORKDIR /app
