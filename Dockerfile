@@ -5,7 +5,7 @@ RUN mkdir /app
 COPY app/package.json /app/
 
 RUN apt-get update -y \
-  && apt-get install -y lirc libnss-mdns avahi-discover libavahi-compat-libdnssd-dev python build-essential curl \
+  && apt-get install -y lirc libnss-mdns avahi-discover libavahi-compat-libdnssd-dev cron python build-essential curl \
   # Install BCM2835 for DHT11 Sensor Support
   && curl -SLO "http://www.airspayce.com/mikem/bcm2835/bcm2835-1.46.tar.gz" \
   && tar -zxvf bcm2835-1.46.tar.gz \
