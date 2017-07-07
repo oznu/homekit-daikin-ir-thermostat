@@ -7,3 +7,6 @@ mkdir -p \
 # delete existing pid if found
 [[ -e /var/run/lirc/lircd.pid ]] && \
 	rm -rf /var/run/lirc/lircd.pid
+
+# Setup cron to cycle lirc every hour
+echo "0	*	*	*	*	pkill lirc" > /var/spool/cron/crontabs/root
