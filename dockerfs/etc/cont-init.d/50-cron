@@ -4,7 +4,7 @@
 mkdir -p /var/spool/cron/crontabs
 
 # delete existing pid if found
-[[ -e /var/run/crond.pid ]] rm -rf /var/run/crond.pid
+[[ -e /var/run/crond.pid ]] && rm -rf /var/run/crond.pid
 
 # Setup cron to cycle lirc every hour
-echo "0	*	*	*	*	pkill lirc" > /var/spool/cron/crontabs/root
+echo "0	*	*	*	*	s6-svc -t /var/run/s6/services/lirc" > /var/spool/cron/crontabs/root

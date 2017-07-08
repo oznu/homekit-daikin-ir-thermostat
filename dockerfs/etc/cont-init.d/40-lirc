@@ -4,4 +4,4 @@
 mkdir -p /var/run/lirc
 
 # delete existing pid if found
-[[ -e /var/run/lirc/lircd.pid ]] rm -rf /var/run/lirc/lircd.pid
+[[ -e /var/run/lirc/lircd.pid ]] && rm -rf /var/run/lirc/lircd.pid
