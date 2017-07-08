@@ -29,8 +29,8 @@ class Thermostat {
     this.status = {}
     this.status.currentTemperature = 20
     this.status.currentHumidity = 0
-    this.status.targetTemperature = config.get('defaultTemp')
-    this.status.mode = config.get('defaultState')
+    this.status.targetTemperature = config.get('currentTargetTemp')
+    this.status.mode = config.get('currentState')
 
     exec(`command -v ${this.irsend}`, (commandErr) => {
       if (commandErr) {
@@ -140,6 +140,11 @@ class Thermostat {
         console.error(err.message)
         console.error(`Failed to send command. Is LIRC configured?`)
       }
+
+      config.set('currentTargetTemp', this.status.targetTemperature)
+      config.set('currentState', this.status.mode)
+      config.save()
+
       callback(null, this.status)
     })
   }
