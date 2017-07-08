@@ -9,6 +9,7 @@ class Thermostat {
   constructor () {
     this.remote = config.get('remote')
     this.irsend = config.get('irsend')
+    this.irsendCount = config.get('irsendCount')
 
     this.dht = {
       sensorType: config.get('sensorType'),
@@ -134,7 +135,7 @@ class Thermostat {
 
     console.log(`Sending ir request using ${this.remote}: ${irCommand}`)
 
-    exec(`${this.irsend} SEND_ONCE ${this.remote} ${irCommand}`, (err) => {
+    exec(`${this.irsend} --count=${this.irsendCount} SEND_ONCE ${this.remote} ${irCommand}`, (err) => {
       if (err) {
         console.error(err.message)
         console.error(`Failed to send command. Is LIRC configured?`)

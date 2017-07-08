@@ -17,6 +17,7 @@ nconf.defaults({
   defaultState: 'off',
   dht: false,
   irsend: 'irsend',
+  irsendCount: 2,
   sensorType: 11,
   sensorGpio: 4,
   minCoolTemp: 18,

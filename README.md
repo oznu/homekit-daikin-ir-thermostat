@@ -18,7 +18,7 @@ Your system must have lirc installed and an infrared emitter configured. [This G
 ## Setup
 
 
-Add the ```daikin-ARC452A4.conf``` file to the /etc/lirc/lircd.conf:
+Add the ```ac-ir-controller.conf``` file to the /etc/lirc/lircd.conf:
 
 ```
 include "/path/to/daikin-ir-controller/app/ac-ir-controller.conf"

@@ -30,4 +30,6 @@ WORKDIR /app
 
 COPY dockerfs /
 
+ENV S6_KEEP_ENV=1
+
 ENTRYPOINT [ "/init" ]
