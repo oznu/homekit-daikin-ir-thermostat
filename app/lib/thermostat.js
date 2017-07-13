@@ -9,7 +9,6 @@ class Thermostat {
   constructor () {
     this.remote = config.get('remote')
     this.irsend = config.get('irsend')
-    this.irsendCount = config.get('irsendCount')
 
     this.dht = {
       sensorType: config.get('sensorType'),
@@ -125,17 +124,12 @@ class Thermostat {
   }
 
   sendUpdate (callback) {
-    let irCommand
-
-    if (this.status.mode === 'off') {
-      irCommand = 'off'
-    } else {
-      irCommand = `${this.status.targetTemperature}c-${this.status.mode}`
-    }
+    let irCommand = (this.status.mode === 'off') ? 'off' : `${this.status.targetTemperature}c-${this.status.mode}`
+    let irSendCommand = (this.status.mode === 'off') ? `${this.irsend} --count=3` : this.irsend
 
     console.log(`Sending ir request using ${this.remote}: ${irCommand}`)
 
-    exec(`${this.irsend} --count=${this.irsendCount} SEND_ONCE ${this.remote} ${irCommand}`, (err) => {
+    exec(`${irSendCommand} SEND_ONCE ${this.remote} ${irCommand}`, (err) => {
       if (err) {
         console.error(err.message)
         console.error(`Failed to send command. Is LIRC configured?`)
