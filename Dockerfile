@@ -1,35 +1,53 @@
 # Usage: docker run -d --net=host --cap-add SYS_RAWIO --device /dev/mem:/dev/mem --device /dev/lirc0:/dev/lirc0 -v /local/path:/app/persist oznu/rpi-daikin-ir-controller
-FROM resin/raspberry-pi-node:6.10-slim
+FROM oznu/s6-node:6.11.0-armhf
 
-RUN mkdir /app
+# Build and Install Lirc
+RUN apk add --no-cache --virtual .lirc-deps \
+  git automake autoconf libtool make gcc g++ python3 \
+  python3-dev libxslt py3-yaml linux-headers python3-dev \
+  && git clone git://git.code.sf.net/p/lirc/git /tmp/lirc \
+  && cd /tmp/lirc \
+  && ./autogen.sh \
+  && ./configure --prefix=/ \
+  && make \
+  && make install \
+  && cd / \
+  && rm -rf /tmp/lirc \
+  && apk del .lirc-deps \
+  && apk add --no-cache libstdc++ libgcc \
+  && mkdir -p /var/run/lirc
+
 COPY app/package.json /app/
 
-RUN apt-get update -y \
-  && apt-get install -y lirc libnss-mdns avahi-discover libavahi-compat-libdnssd-dev cron python build-essential curl \
-  # Install BCM2835 for DHT11 Sensor Support
+# Add deps
+RUN apk add --no-cache \
+  libffi-dev \
+  openssl-dev \
+  avahi-compat-libdns_sd \
+  avahi-dev \
+  dbus
+
+# Build and install packages
+RUN apk add --no-cache --virtual .bcm2835-deps \
+  git python gcc g++ make curl \
   && curl -SLO "http://www.airspayce.com/mikem/bcm2835/bcm2835-1.46.tar.gz" \
   && tar -zxvf bcm2835-1.46.tar.gz \
   && cd bcm2835-1.46 \
   && ./configure \
   && make \
   && make install \
+  && cd .. \
+  && rm -rf bcm2835-1.46 \
   && rm -rf /tmp/* \
-  # Install app deps
   && cd /app \
-  && npm install --production \
-  && npm install node-dht-sensor \
-  # Install S6 Overlay
-  && curl -L -s https://github.com/just-containers/s6-overlay/releases/download/v1.19.1.1/s6-overlay-armhf.tar.gz | tar xvzf - -C / \
-  # Cleanup
-  && apt-get remove python build-essential curl \
-  && apt-get autoremove \
-  && apt-get clean
+  && yarn global add node-gyp \
+  && yarn install --production \
+  && yarn add node-dht-sensor \
+  && apk del .bcm2835-deps
 
 COPY app /app
 WORKDIR /app
 
-COPY dockerfs /
-
 ENV S6_KEEP_ENV=1
 
-ENTRYPOINT [ "/init" ]
+COPY dockerfs /

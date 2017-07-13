@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv bash
+#!/usr/bin/with-contenv sh
 
 # make folders
 mkdir -p /var/spool/cron/crontabs
@@ -8,4 +8,3 @@ mkdir -p /var/spool/cron/crontabs
 
 # Setup cron to cycle lirc every hour
 echo "0	*	*	*	*	s6-svc -t /var/run/s6/services/lirc" > /var/spool/cron/crontabs/root
-crontab /var/spool/cron/crontabs/root

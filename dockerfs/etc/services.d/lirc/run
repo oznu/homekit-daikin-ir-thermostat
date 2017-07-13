@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv bash
+#!/usr/bin/with-contenv sh
 
 echo "Starting lircd"
 exec lircd -n --driver=default -d /dev/lirc0 -P /dev/null
