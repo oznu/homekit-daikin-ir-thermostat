@@ -2,6 +2,7 @@
 
 const nconf = require('nconf')
 const path = require('path')
+const remotes = require('../remotes.json')
 
 const configFile = path.resolve(__dirname, '../persist/config.json')
 
@@ -12,20 +13,27 @@ nconf.defaults({
   username: null,
   pincode: null,
   name: 'Thermostat',
-  remote: 'daikin-ARC452A4',
+  remote: 'daikin-arc452a4',
   currentTargetTemp: 25,
   currentState: 'off',
   dht: false,
   irsend: 'irsend',
   sensorType: 11,
-  sensorGpio: 4,
-  minCoolTemp: 18,
-  maxCoolTemp: 30,
-  minHeatTemp: 10,
-  maxHeatTemp: 30,
-  minAutoTemp: 18,
-  maxAutoTemp: 30
+  sensorGpio: 4
 })
+
+// Check remote
+if (!remotes[nconf.get('remote')]) {
+  console.error(`The remote "${nconf.get('remote')}" could not be found in the remotes.json file.`)
+  process.exit(1)
+}
+
+nconf.set('minCoolTemp', remotes[nconf.get('remote')].modes.cool.min)
+nconf.set('maxCoolTemp', remotes[nconf.get('remote')].modes.cool.max)
+nconf.set('minHeatTemp', remotes[nconf.get('remote')].modes.heat.min)
+nconf.set('maxHeatTemp', remotes[nconf.get('remote')].modes.heat.max)
+nconf.set('minAutoTemp', remotes[nconf.get('remote')].modes.auto.min)
+nconf.set('maxAutoTemp', remotes[nconf.get('remote')].modes.auto.max)
 
 // Generate username on first run.
 let genUsername = () => {
