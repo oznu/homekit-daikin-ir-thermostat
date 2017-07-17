@@ -125,7 +125,7 @@ class Thermostat {
 
   sendUpdate (callback) {
     let irCommand = (this.status.mode === 'off') ? 'off' : `${this.status.mode}-${this.status.targetTemperature}c`
-    let irSendCommand = (this.status.mode === 'off') ? `${this.irsend} --count=3` : this.irsend
+    let irSendCommand = (this.status.mode === 'off') ? `${this.irsend} --count=3` : `${this.irsend} --count=2`
 
     console.log(`Sending ir request using ${this.remote}: ${irCommand}`)
 
