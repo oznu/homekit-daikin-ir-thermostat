@@ -32,6 +32,7 @@ class Thermostat {
     this.status.mode = config.get('currentState')
 
     exec(`command -v ${this.irsend}`, (commandErr) => {
+      console.log(commandErr);
       if (commandErr) {
         console.error('WARNING: irsend not found in path. Is LIRC installed?')
       } else {
@@ -124,7 +125,7 @@ class Thermostat {
   }
 
   sendUpdate (callback) {
-    let irCommand = (this.status.mode === 'off') ? 'off' : `${this.status.targetTemperature}c-${this.status.mode}`
+    let irCommand = (this.status.mode === 'off') ? 'off' : `${this.status.mode}-${this.status.targetTemperature}c`
     let irSendCommand = (this.status.mode === 'off') ? `${this.irsend} --count=3` : this.irsend
 
     console.log(`Sending ir request using ${this.remote}: ${irCommand}`)

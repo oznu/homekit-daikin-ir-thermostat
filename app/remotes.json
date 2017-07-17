@@ -1,0 +1,20 @@
+{
+  "daikin-arc452a4": {
+    "manufacturer": "Daikin",
+    "model": "ARC452A4",
+    "modes": {
+      "auto": {
+        "min": 18,
+        "max": 30
+      },
+      "heat": {
+        "min": 10,
+        "max": 30
+      },
+      "cool": {
+        "min": 18,
+        "max": 32
+      }
+    }
+  }
+}

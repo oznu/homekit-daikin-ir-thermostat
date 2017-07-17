@@ -9,9 +9,10 @@
   "author": "oznu <dev@oz.nu>",
   "license": "MIT",
   "dependencies": {
+    "bluebird": "^3.5.0",
     "chalk": "^1.1.3",
     "express": "^4.15.2",
-    "hap-nodejs": "^0.4.22",
+    "hap-nodejs": "^0.4.27",
     "morgan": "^1.8.1",
     "nconf": "^0.8.4"
   },
