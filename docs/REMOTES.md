@@ -10,49 +10,46 @@ The rest of the settings like fan speed and swing/oscillate should be set as des
 
 ## Creating A New Remote
 
-Create a new directory in the remotes folder using the name of your remote.
+Create a new entry in the ```remotes.json``` file defining the properties of the remote.
 
-```
-mkdir remotes/<brand-model>
-```
-
-Stop Lirc:
-
-```
-sudo /etc/init.d/lirc stop
-```
-
-While set to **OFF** configure the AC controller to *Cool* mode on the lowest temperature start recording then press the **ON** button:
-
-```
-mode2 -d /dev/lirc0 -m > remotes/<brand-model>/18c-cool
-```
-
-Wait about a second then cancel the process. Check the contents of ```remotes/<brand-model>/18c-cool```, it should contain the IR codes for that mode/temperature combination.
-
-Repeat this process for all the temperatures up to the maximum available on *Cool* mode. Then repeat the process for *Heat* and *Auto* modes.
-
-Record the *Off* command by recording the signal sent when you turn the remote off:
-
-```
-mode2 -d /dev/lirc0 -m > remotes/<brand-model>/off
+```json
+"daikin-arc452a4": {
+  "manufacturer": "Daikin",
+  "model": "ARC452A4",
+  "modes": {
+    "auto": {
+      "min": 18,
+      "max": 30
+    },
+    "heat": {
+      "min": 10,
+      "max": 30
+    },
+    "cool": {
+      "min": 18,
+      "max": 32
+    }
+  }
+}
 ```
 
-Once complete, start up the lirc process again:
+Run the ```recorder.js``` script:
 
 ```
-sudo /etc/init.d/lirc start
+node recorder.js --remote daikin-arc452a4
 ```
+
+You will be prompted to press the button on your remote control for each state and temperature.
 
 ## Building The Remote Config File
 
-Once you have recorded all the signals for your new remote, update the **ac-ir-controller.conf** file by running:
+Once you have recorded all the signals for your new remote, update the **lircd.conf** file by running:
 
 ```
-./generate-lircd.conf.js
+./bin/init
 ```
 
- Restart lirc every time you make a change to the *ac-ir-controller.conf* file.
+ Restart lirc every time you make a change to any remote codes.
 
  ```
  sudo /etc/init.d/lirc restart
@@ -63,5 +60,5 @@ Once you have recorded all the signals for your new remote, update the **ac-ir-c
 Use the ```--remote``` flag with the name of your remote.
 
 ```
-./bin/www --remote daikin-ARC452A4
+./bin/www --remote daikin-arc452a4
 ```

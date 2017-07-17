@@ -32,7 +32,6 @@ class Thermostat {
     this.status.mode = config.get('currentState')
 
     exec(`command -v ${this.irsend}`, (commandErr) => {
-      console.log(commandErr);
       if (commandErr) {
         console.error('WARNING: irsend not found in path. Is LIRC installed?')
       } else {

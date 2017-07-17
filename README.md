@@ -17,11 +17,10 @@ Your system must have lirc installed and an infrared emitter configured. [This G
 
 ## Setup
 
-
-Add the ```ac-ir-controller.conf``` file to the /etc/lirc/lircd.conf:
+Build a ```lircd.conf``` file and copy this to ```/etc/lirc/lircd.conf```:
 
 ```
-include "/path/to/daikin-ir-controller/app/ac-ir-controller.conf"
+./bin/init
 ```
 
 Restart Lirc:
@@ -33,7 +32,7 @@ sudo /etc/init.d/lirc restart
 Test this is working:
 
 ```
-irsend SEND_ONCE daikin-ARC452A4 off
+irsend SEND_ONCE daikin-arc452a4 off
 ```
 
 ## Usage

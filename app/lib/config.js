@@ -19,8 +19,14 @@ nconf.defaults({
   dht: false,
   irsend: 'irsend',
   sensorType: 11,
-  sensorGpio: 4,
+  sensorGpio: 4
 })
+
+// Check remote
+if (!remotes[nconf.get('remote')]) {
+  console.error(`The remote "${nconf.get('remote')}" could not be found in the remotes.json file.`)
+  process.exit(1)
+}
 
 nconf.set('minCoolTemp', remotes[nconf.get('remote')].modes.cool.min)
 nconf.set('maxCoolTemp', remotes[nconf.get('remote')].modes.cool.max)

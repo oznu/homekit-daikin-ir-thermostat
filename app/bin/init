@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-'use strict';
+'use strict'
 
 const fs = require('fs')
 const path = require('path')
@@ -10,4 +10,4 @@ let conf = Object.keys(remotes).map((remote) => {
   return `include "${path.resolve(__dirname, `../remotes/${remote}.conf`)}"`
 }).join('\n') + '\n'
 
-return fs.writeFileSync('./lircd.conf', conf)
+fs.writeFileSync('./lircd.conf', conf)
